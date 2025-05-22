@@ -58,7 +58,8 @@ const select = {
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.renderInMenu();
-      console.log('new product: ', thisProduct);
+      thisProduct.initAccordion();
+      //console.log('new product: ', thisProduct);
     }
     renderInMenu(){
       const thisProduct = this;
@@ -72,15 +73,33 @@ const select = {
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
+    initAccordion(){
+      const thisProduct = this;
+
+      /* find clickable trigger */
+      //const article = document.querySelector('.product');
+      const clickableTrigeger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      /* START: add event listiner to clickable trigger on event 'click' */
+      clickableTrigeger.addEventListener('click', function(event){
+        event.preventDefault();
+        /* find active product */
+        const activeProduct = document.querySelector(select.all.menuProductsActive);
+        /* if active product is not thisProduct.element remove class active */
+        console.log(activeProduct)
+        if(activeProduct !== thisProduct.element && activeProduct){
+          activeProduct.classList.remove('active');
+        }
+        /* toggle active class on thisProduct.element */
+        thisProduct.element.classList.toggle('active');
+      });
+    }
 
   }
 
   const app = {
     initMenu: function(){
       const thisApp = this;
-
-      console.log('thisApp.data: ', thisApp.data);
-
+      //console.log('thisApp.data: ', thisApp.data);
       for(let productData in thisApp.data.products){
         new Product(productData, thisApp.data.products[productData]);
       }
