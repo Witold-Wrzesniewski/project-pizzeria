@@ -58,6 +58,7 @@ const select = {
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAccordion();
       //console.log('new product: ', thisProduct);
     }
@@ -73,14 +74,23 @@ const select = {
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
+
+    getElements(){
+      const thisProduct = this;
+
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
+
     initAccordion(){
       const thisProduct = this;
 
       /* find clickable trigger */
-      //const article = document.querySelector('.product');
-      const clickableTrigeger = thisProduct.element.querySelector(select.menuProduct.clickable);
       /* START: add event listiner to clickable trigger on event 'click' */
-      clickableTrigeger.addEventListener('click', function(event){
+      thisProduct.accordionTrigger.addEventListener('click', function(event){
         event.preventDefault();
         /* find active product */
         const activeProduct = document.querySelector(select.all.menuProductsActive);
