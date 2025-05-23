@@ -97,7 +97,7 @@ const select = {
         /* find active product */
         const activeProduct = document.querySelector(select.all.menuProductsActive);
         /* if active product is not thisProduct.element remove class active */
-        console.log(activeProduct)
+        //console.log(activeProduct)
         if(activeProduct !== thisProduct.element && activeProduct){
           activeProduct.classList.remove('active');
         }
@@ -108,10 +108,67 @@ const select = {
 
     initOrderForm(){
       const thisProduct = this;
+
+      thisProduct.form.addEventListener('submit', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+
+      for(let input of thisProduct.formInputs){
+        input.addEventListener('change', function(){
+          thisProduct.processOrder();
+        });
+      }
+
+      thisProduct.cartButton.addEventListener('click', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
     }
     
     processOrder(){
       const thisProduct = this;
+
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      //console.log('formData', formData);
+
+      // set price to default price
+      let price = thisProduct.data.price;
+
+      // for every param
+      for(let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+        //console.log(paramId, param);
+
+        // for every option in this param
+        for(let optionId in param.options) {
+          // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+          const option = param.options[optionId];
+          //console.log(optionId, option);
+
+          // check if there is param with a name of paramId in formData and if it includes optionId
+          if(formData[paramId] && formData[paramId].includes(optionId)){
+            // check if the option is not default
+            if(!this.data.params[paramId].options[optionId].hasOwnProperty('default') ||
+              this.data.params[paramId].options[optionId].default == false) {
+              // add option price to price variable
+              console.log('Price increased');
+            }
+          } else {
+            // check if the option is default
+            if(this.data.params[paramId].options[optionId].hasOwnProperty('default') &&
+              this.data.params[paramId].options[optionId].default == true) {
+              // reduce price variable
+              console.log('Price decreased');
+            }
+          }
+        }
+      }
+
+      // update calculated price in the HTML
+      thisProduct.priceElem.innerHTML = price;
     }
 
   }
