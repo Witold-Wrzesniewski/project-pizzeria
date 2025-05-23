@@ -60,6 +60,8 @@ const select = {
       thisProduct.renderInMenu();
       thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.processOrder();
       //console.log('new product: ', thisProduct);
     }
     renderInMenu(){
@@ -102,6 +104,14 @@ const select = {
         /* toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle('active');
       });
+    }
+
+    initOrderForm(){
+      const thisProduct = this;
+    }
+    
+    processOrder(){
+      const thisProduct = this;
     }
 
   }
