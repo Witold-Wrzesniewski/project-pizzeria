@@ -94,7 +94,7 @@
                   <div class="checkbox checkbox--round"> <!-- radio -->
                     <label>
                       {{{ label }}} (${{{ price }}})
-                      <input type="radio" name="{{ paramId }}" value="{{ @key }}" id="{{ @key }}" {{#if default}}checked{{/if}}>
+                      <input type="radio" name="{{ @../key }}" value="{{ @key }}" id="{{ @key }}" {{#if default}}checked{{/if}}>
                       <span class="checkbox__checkmark"></span>
                     </label>
                   </div>
@@ -104,7 +104,7 @@
                 {{#ifEquals type "select"}}
                 <li> <!-- select -->
                   <h3 class="product__params-title">{{{ label }}}</h3>
-                  <select name="{{ paramId }}">
+                  <select name="{{ @key }}">
                     {{#each options}}
                     <option value="{{ @key }}" {{#if default}}selected{{/if}}>{{{ label }}} (${{{ price }}})</option>
                     {{/each}}

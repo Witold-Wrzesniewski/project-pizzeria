@@ -3,9 +3,13 @@
 {
   'use strict';
 
-const select = {
-  templateOf: {
-    menuProduct: "#template-menu-product",
+  /*let processOrederCounter = 0,
+    paramsCounter = 0,
+    optionsCounter = 0;*/
+
+  const select = {
+    templateOf: {
+      menuProduct: "#template-menu-product",
     },
     containerOf: {
       menu: '#product-list',
@@ -115,7 +119,8 @@ const select = {
       });
 
       for(let input of thisProduct.formInputs){
-        input.addEventListener('change', function(){
+        input.addEventListener('change', function(event){
+          console.log(event.target);
           thisProduct.processOrder();
         });
       }
@@ -126,7 +131,8 @@ const select = {
       });
     }
     
-    processOrder(){
+    processOrder(event){
+      //console.log('processOrederCounter: ', ++processOrederCounter);
       const thisProduct = this;
 
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
@@ -138,30 +144,33 @@ const select = {
 
       // for every param
       for(let paramId in thisProduct.data.params) {
+        //console.log('paramsCounter: ', ++paramsCounter);
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
         //console.log(paramId, param);
 
         // for every option in this param
         for(let optionId in param.options) {
+          //console.log('optionsCounter: ', ++optionsCounter);
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];
           //console.log(optionId, option);
 
           // check if there is param with a name of paramId in formData and if it includes optionId
           if(formData[paramId] && formData[paramId].includes(optionId)){
+            console.log(thisProduct.data.params[paramId].options[optionId]);
             // check if the option is not default
             if(!this.data.params[paramId].options[optionId].hasOwnProperty('default') ||
               this.data.params[paramId].options[optionId].default == false) {
               // add option price to price variable
               console.log('Price increased');
             }
-          } else {
+          } else{
             // check if the option is default
             if(this.data.params[paramId].options[optionId].hasOwnProperty('default') &&
               this.data.params[paramId].options[optionId].default == true) {
               // reduce price variable
-              console.log('Price decreased');
+              console.log('Price decreased',);
             }
           }
         }
