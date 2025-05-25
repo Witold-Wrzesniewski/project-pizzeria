@@ -120,7 +120,7 @@
 
       for(let input of thisProduct.formInputs){
         input.addEventListener('change', function(event){
-          console.log(event.target);
+          //console.log(event.target);
           thisProduct.processOrder();
         });
       }
@@ -158,19 +158,20 @@
 
           // check if there is param with a name of paramId in formData and if it includes optionId
           if(formData[paramId] && formData[paramId].includes(optionId)){
-            console.log(thisProduct.data.params[paramId].options[optionId]);
+            //console.log(thisProduct.data.params[paramId].options[optionId]);
             // check if the option is not default
-            if(!this.data.params[paramId].options[optionId].hasOwnProperty('default') ||
-              this.data.params[paramId].options[optionId].default == false) {
+            if(!thisProduct.data.params[paramId].options[optionId].hasOwnProperty('default') ||
+              thisProduct.data.params[paramId].options[optionId].default == false) {
               // add option price to price variable
-              console.log('Price increased');
+              price += thisProduct.data.params[paramId].options[optionId].price;
+              //console.log('Price increased');
             }
           } else{
             // check if the option is default
-            if(this.data.params[paramId].options[optionId].hasOwnProperty('default') &&
-              this.data.params[paramId].options[optionId].default == true) {
+            if(thisProduct.data.params[paramId].options[optionId].default) {
               // reduce price variable
-              console.log('Price decreased',);
+              price -= thisProduct.data.params[paramId].options[optionId].price;
+              //console.log('Price decreased');
             }
           }
         }
