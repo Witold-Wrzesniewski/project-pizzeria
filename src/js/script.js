@@ -89,6 +89,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion(){
@@ -153,11 +154,12 @@
         for(let optionId in param.options) {
           //console.log('optionsCounter: ', ++optionsCounter);
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
-          const option = param.options[optionId];
+          //const option = param.options[optionId];
           //console.log(optionId, option);
 
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
           // check if there is param with a name of paramId in formData and if it includes optionId
-          if(formData[paramId] && formData[paramId].includes(optionId)){
+          if(optionSelected){
             //console.log(thisProduct.data.params[paramId].options[optionId]);
             // check if the option is not default
             if(!thisProduct.data.params[paramId].options[optionId].hasOwnProperty('default') ||
@@ -172,6 +174,20 @@
               // reduce price variable
               price -= thisProduct.data.params[paramId].options[optionId].price;
               //console.log('Price decreased');
+            }
+          }
+
+          /* find image with class .paramId-optionId in an image-wrapper */
+          const image = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
+          /* check if image exists */
+          if(image){
+            /* check if patramId.optionId is selected and add class .active */
+            if(optionSelected){
+              image.classList.add(classNames.menuProduct.imageVisible);
+            }
+            /* else remove class .active */
+            else{
+              image.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }
