@@ -97,6 +97,10 @@
     initAmountWidget(){
       const thisProduct = this;
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
+        thisProduct.processOrder();
+      });
     }
 
     initAccordion(){
@@ -139,7 +143,7 @@
       });
     }
     
-    processOrder(event){
+    processOrder(){
       //console.log('processOrederCounter: ', ++processOrederCounter);
       const thisProduct = this;
 
@@ -201,6 +205,7 @@
       }
 
       // update calculated price in the HTML
+      price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price;
     }
 
@@ -233,10 +238,17 @@
 
       /* TODO add validation */
 
-        if(newValue != thisWidget.value && !isNaN(newValue)){
+        if(newValue != thisWidget.value && !isNaN(newValue) && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax){
           thisWidget.value = newValue;
         }
-        thisWidget.input.value = thisWidget.value;    
+        thisWidget.input.value = thisWidget.value;
+        thisWidget.announce(); 
+    }
+
+    announce(){
+      const thisWidget = this;
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
     }
 
     initActions(){
