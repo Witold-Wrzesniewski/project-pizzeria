@@ -3,10 +3,6 @@
 {
   'use strict';
 
-  /*let processOrederCounter = 0,
-    paramsCounter = 0,
-    optionsCounter = 0;*/
-
   const select = {
     templateOf: {
       menuProduct: "#template-menu-product",
@@ -172,47 +168,38 @@
     }
     
     processOrder(){
-      //console.log('processOrederCounter: ', ++processOrederCounter);
       const thisProduct = this;
 
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
-      //console.log('formData', formData);
+      //console.log('processOrder: ', thisProduct.dom.form);
 
       // set price to default price
       let price = thisProduct.data.price;
 
       // for every param
       for(let paramId in thisProduct.data.params) {
-        //console.log('paramsCounter: ', ++paramsCounter);
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
-        //console.log(paramId, param);
 
         // for every option in this param
         for(let optionId in param.options) {
-          //console.log('optionsCounter: ', ++optionsCounter);
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
-          //const option = param.options[optionId];
-          //console.log(optionId, option);
 
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
           // check if there is param with a name of paramId in formData and if it includes optionId
           if(optionSelected){
-            //console.log(thisProduct.data.params[paramId].options[optionId]);
             // check if the option is not default
             if(!thisProduct.data.params[paramId].options[optionId].hasOwnProperty('default') ||
               thisProduct.data.params[paramId].options[optionId].default == false) {
               // add option price to price variable
               price += thisProduct.data.params[paramId].options[optionId].price;
-              //console.log('Price increased');
             }
           } else{
             // check if the option is default
             if(thisProduct.data.params[paramId].options[optionId].default) {
               // reduce price variable
               price -= thisProduct.data.params[paramId].options[optionId].price;
-              //console.log('Price decreased');
             }
           }
 
@@ -242,6 +229,8 @@
       const thisProduct = this;
 
       app.cart.add(thisProduct.prepareCartProduct());
+      
+      //console.log(thisProduct.prepareCartProductParams());
     }
 
     prepareCartProduct(){
@@ -254,11 +243,44 @@
       productSummary.priceSingle = thisProduct.priceSingle;
       productSummary.price = productSummary.priceSingle * productSummary.amount;
 
-      productSummary.params = {};
+      productSummary.params = thisProduct.prepareCartProductParams();
 
       return productSummary;
     }
 
+    prepareCartProductParams(){
+      const thisProduct = this;
+
+      const params = {};
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.dom.form);
+
+      // for every param
+      for(let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+        // add param to thisProduct.cartProductParams object
+
+        //params[paramId].label = thisProduct.data.params[paramId].label;
+        params[paramId] = {
+          label: thisProduct.data.params[paramId].label,
+          options: {}
+        };
+
+        // for every option in this param
+        for(let optionId in param.options) {
+          // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+          // check if there is param with a name of paramId in formData and if it includes optionId
+          if(optionSelected){
+              // add option to thisProduct.cartProductParams object
+              params[paramId].options[optionId] = thisProduct.data.params[paramId].options[optionId].label;
+            }
+          } 
+      }
+      return params;
+    }
   }
 
   class AmountWidget{
@@ -322,7 +344,7 @@
       thisCart.getElements(element);
       thisCart.initActions();
 
-      console.log('new Cart', thisCart);
+      //console.log('new Cart', thisCart);
     }
 
     getElements(element){
