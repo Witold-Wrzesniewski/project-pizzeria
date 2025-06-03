@@ -381,6 +381,11 @@
       const url = settings.db.url + '/' + settings.db.orders;
       const payload = {};
       payload.address = thisCart.dom.form.querySelector(select.cart.address).value;
+      payload.phone = thisCart.dom.form.querySelector(select.cart.phone).value;
+      payload.totalPrice = thisCart.totalPrice;
+      payload.subtotalPrice = parseInt(thisCart.dom.subtotalPrice.innerHTML);
+      payload.totalNumber = parseInt(thisCart.dom.totalNumber.innerHTML);
+      payload.deliveryFee = parseInt(thisCart.dom.deliveryFee.innerHTML);
 
       console.log(payload);
     }
