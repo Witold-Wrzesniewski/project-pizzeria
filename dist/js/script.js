@@ -355,6 +355,8 @@
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
       thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+      thisCart.dom.address = thisCart.dom.form.querySelector(select.cart.address);
+      thisCart.dom.phone = thisCart.dom.form.querySelector(select.cart.phone);
     }
 
     initActions(){
@@ -380,12 +382,12 @@
 
       const url = settings.db.url + '/' + settings.db.orders;
       const payload = {};
-      payload.address = thisCart.dom.form.querySelector(select.cart.address).value;
-      payload.phone = thisCart.dom.form.querySelector(select.cart.phone).value;
+      payload.address = thisCart.dom.address.value;
+      payload.phone = thisCart.dom.phone.value;
       payload.totalPrice = thisCart.totalPrice;
-      payload.subtotalPrice = parseInt(thisCart.dom.subtotalPrice.innerHTML);
-      payload.totalNumber = parseInt(thisCart.dom.totalNumber.innerHTML);
-      payload.deliveryFee = parseInt(thisCart.dom.deliveryFee.innerHTML);
+      payload.subtotalPrice = parseInt(thisCart.subtotalPrice);
+      payload.totalNumber = parseInt(thisCart.totalNumber);
+      payload.deliveryFee = thisCart.deliveryFee;
 
       console.log(payload);
     }
@@ -410,24 +412,24 @@
     update(){
       const thisCart = this;
 
-      const deliveryFee = settings.cart.defaultDeliveryFee;
-      let totalNumber = 0,
-        subtotalPrice = 0;
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
 
       for(let product of thisCart.products){
-        totalNumber += product.amount;
-        subtotalPrice += product.price;
+        thisCart.totalNumber += product.amount;
+        thisCart.subtotalPrice += product.price;
       }
 
       if(thisCart.products.length == 0){
         thisCart.totalPrice = 0;
       } else{
-        thisCart.totalPrice = subtotalPrice + deliveryFee;
+        thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
       }
 
-      thisCart.dom.deliveryFee.innerHTML = deliveryFee;
-      thisCart.dom.totalNumber.innerHTML = totalNumber;
-      thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+      thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee;
+      thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
+      thisCart.dom.subtotalPrice.innerHTML = thisCart.subtotalPrice;
       for(let totalPriceElem of thisCart.dom.totalPrice){
         totalPriceElem.innerHTML = thisCart.totalPrice;
       }
