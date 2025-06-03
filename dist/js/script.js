@@ -388,8 +388,27 @@
       payload.subtotalPrice = parseInt(thisCart.subtotalPrice);
       payload.totalNumber = parseInt(thisCart.totalNumber);
       payload.deliveryFee = thisCart.deliveryFee;
+      payload.products = [];
 
-      console.log(payload);
+      for(let prod of thisCart.products) {
+        payload.products.push(prod.getData());
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+
+      fetch(url, options)
+      .then(function(response){
+        return response.json();
+      }).then(function(parsedResponse){
+        console.log('parsedResponse: ', parsedResponse);
+      });
+      //console.log(payload);
     }
     remove(cartProduct){
       const thisCart = this;
@@ -482,6 +501,18 @@
       });
       thisCartProduct.dom.wrapper.dispatchEvent(event);
     }
+    getData(){
+      const thisCartProduct = this;
+
+      return {
+        id: thisCartProduct.id,
+        amount: thisCartProduct.amount,
+        name: thisCartProduct.name,
+        priceSingle: thisCartProduct.priceSingle,
+        price: thisCartProduct.price,
+        params: thisCartProduct.params,
+      }
+    }
     initActions(){
       const thisCartProduct = this;
       thisCartProduct.dom.edit.addEventListener('click', function(event){
@@ -518,7 +549,6 @@
       fetch(url).then(function(rawResponse){
         return rawResponse.json();
       }).then(function(parsedResponse){
-        console.log('parsedResponse: ', parsedResponse);
 
         /* save parsedResponse as thisApp.data.products */
         thisApp.data.products = {};
@@ -528,7 +558,6 @@
           thisApp.data.products[productId] = product;
         }
 
-        console.log(thisApp.data.products);
         /* execute initMenu method */
         thisApp.initMenu();
         //console.log('thisApp.data: ', JSON.stringify(thisApp.data));
