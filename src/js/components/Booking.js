@@ -10,6 +10,7 @@ class Booking {
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    thisBooking.selectedTable = 0;
   }
   render(element){
     const thisBooking = this;
@@ -25,6 +26,9 @@ class Booking {
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
 
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+
+    thisBooking.dom.tablesWrapper = thisBooking.dom.wrapper.querySelector(select.booking.tablesWrapper);
+    thisBooking.dom.alert = thisBooking.dom.wrapper.querySelector(select.booking.alert);
   }
   initWidgets(){
     const thisBooking = this;
@@ -41,6 +45,32 @@ class Booking {
     /*thisBooking.dom.hoursAmount.addEventListener('updated', function(){
       console.log('Updated hours amount. New amount: ', this.querySelector('input.amount').value);
     });*/
+    thisBooking.dom.tablesWrapper.addEventListener('click', function(event){
+      const clickedElement = event.target;
+      if(clickedElement.classList.contains('table')){
+        thisBooking.initTables(clickedElement);        
+      }      
+    });
+  }
+  initTables(clickedTable){
+    const thisBooking = this;
+
+    if(clickedTable.classList.contains(classNames.booking.tableBooked)){
+      thisBooking.dom.alert.classList.remove(classNames.booking.alertHidden);
+      thisBooking.selectedTable = 0;
+      for(const table of thisBooking.dom.tables){
+        table.classList.remove(classNames.booking.tableSelected);
+      }
+      return;
+    }
+
+    thisBooking.dom.alert.classList.add(classNames.booking.alertHidden);
+    for(const table of thisBooking.dom.tables){
+      if(table !== clickedTable)
+        table.classList.remove(classNames.booking.tableSelected);
+    }
+    thisBooking.selectedTable = parseInt(clickedTable.getAttribute('data-table'));
+    clickedTable.classList.toggle(classNames.booking.tableSelected);
   }
   getData(){
     const thisBooking = this;
@@ -158,6 +188,11 @@ class Booking {
       } else{
         table.classList.remove(classNames.booking.tableBooked);
       }
+    }
+
+    thisBooking.dom.alert.classList.add(classNames.booking.alertHidden);
+    for(const table of thisBooking.dom.tables){
+      table.classList.remove(classNames.booking.tableSelected);
     }
   }
 }
