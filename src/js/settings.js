@@ -42,9 +42,15 @@ export const select = {
   booking: {
     peopleAmount: '.people-amount',
     hoursAmount: '.hours-amount',
+    peopleAmountInput: 'input[name="people"]',
+    hoursAmountInput: 'input[name="hours"]',
     tables: '.floor-plan .table',
     tablesWrapper: '.floor-plan',
     alert: '.alert',
+    phone: 'input[name="phone"]',
+    address: 'input[name="address"]',
+    starters: 'input[type="checkbox"][name="starter"]',
+    submit: 'button[type="submit"]',
   },
   nav: {
     links: '.main-nav a',

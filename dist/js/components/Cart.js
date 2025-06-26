@@ -77,7 +77,6 @@ class Cart {
     }).then(function(parsedResponse){
       console.log('parsedResponse: ', parsedResponse);
     });
-    //console.log(payload);
   }
   remove(cartProduct){
     const thisCart = this;
