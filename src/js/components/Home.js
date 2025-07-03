@@ -1,3 +1,5 @@
+import {templates} from '../settings.js';
+
 class Home {
   constructor(element){
     const thisHome = this;
@@ -8,6 +10,10 @@ class Home {
     const thisHome = this;
 
     thisHome.dom = {};
+    thisHome.dom.wrapper = element;
+    thisHome.dom.wrapper.innerHTML = templates.homePage();
     
   }
 }
+
+export default Home;
