@@ -75,6 +75,9 @@ export const select = {
     edit: '[href="#edit"]',
     remove: '[href="#remove"]',
   },
+  homePage: {
+    carousel: '.carousel',
+  },
 };
 
 export const settings = {

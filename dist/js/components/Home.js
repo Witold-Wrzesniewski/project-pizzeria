@@ -1,4 +1,4 @@
-import {templates} from '../settings.js';
+import {templates, select} from '../settings.js';
 
 class Home {
   constructor(element){
@@ -12,7 +12,11 @@ class Home {
     thisHome.dom = {};
     thisHome.dom.wrapper = element;
     thisHome.dom.wrapper.innerHTML = templates.homePage();
-    
+
+    thisHome.dom.carousel = select.homePage.carousel;
+    const flkty = new Flickity(thisHome.dom.carousel, {
+      wrapAround: true
+    });
   }
 }
 

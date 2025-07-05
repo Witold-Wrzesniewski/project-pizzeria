@@ -1,8 +1,11 @@
+.home {
+  background: #fff;
+  padding: 50px 20px;
+}
 .buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 50px;
   .button {
     width: 50%;
     height: 150px;
@@ -23,13 +26,13 @@
 .carousel-item {
   height: 250px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   .signature {
     font-style: italic;
   }
 }
 .carousel-image {
-  width: 300px;
+  width: 250px;
   overflow: hidden;
     img {
       width: 100%;
@@ -38,7 +41,7 @@
     }
 }
 .carousel-text {
-  width: 300px;
+  width: 380px;
 }
 .overlay {
   position: relative;
