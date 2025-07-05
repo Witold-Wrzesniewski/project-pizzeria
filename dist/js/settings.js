@@ -77,6 +77,7 @@ export const select = {
   },
   homePage: {
     carousel: '.carousel',
+    buttons: '.boxes .button',
   },
 };
 

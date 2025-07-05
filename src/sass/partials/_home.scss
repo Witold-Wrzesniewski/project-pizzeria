@@ -15,16 +15,20 @@
         height: 100%;
         object-fit: cover;
       }
-      &:hover > .overlay {
-        top: -160px;
-        h2 {
-          display: block;
+      &:hover {
+        cursor: pointer;
+        .overlay {
+          top: -160px;
+          h2 {
+            display: block;
+          }
         }
       }
   }
 }
 .carousel-item {
   height: 250px;
+  width: 660px;
   display: flex;
   justify-content: space-between;
   .signature {
