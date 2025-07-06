@@ -68,34 +68,45 @@
   }
   .info {
     background: $color-main;
-    color: white;
+    color: #fff;
   }
 }
 .gallery {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
   margin-top: 100px;
   .gallery-item {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 213px;
+    height: 213px;
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
     .overlay {
+      color: #fff;
+      opacity: 0;
       position: absolute;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
-      color: white;
       font-size: 2em;
       text-align: center;
       background: rgba(255, 255, 255, 0.2);
       line-height: 200px;
-      i {
-        //letter-spacing: 2em;
-      }
+      transition: all 0.5s;
     }
+    &:hover .overlay {
+      opacity: 1;
+      color: $color-main;
+    }
+  }
+}
+.footer {
+  a {
+    color: $color-main;
   }
 }
